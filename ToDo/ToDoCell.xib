@@ -14,25 +14,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3">
-                        <rect key="frame" x="41" y="11" width="222" height="21"/>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g8D-Kf-RHY">
+                        <rect key="frame" x="46" y="8" width="200" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="222" id="25"/>
-                            <constraint firstAttribute="height" constant="21" id="42"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </label>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
                 </subviews>
             </tableViewCellContentView>
-            <constraints>
-                <constraint firstItem="3" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="41" id="Q0i-Ww-x3o"/>
-                <constraint firstItem="3" firstAttribute="top" secondItem="2" secondAttribute="top" constant="11" id="ZOR-og-TwF"/>
-            </constraints>
             <connections>
-                <outlet property="toDoItem" destination="3" id="26"/>
+                <outlet property="toDoTextItem" destination="g8D-Kf-RHY" id="eX1-LJ-o27"/>
             </connections>
         </tableViewCell>
     </objects>

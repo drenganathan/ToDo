@@ -13,6 +13,5 @@
 @property (nonatomic, retain) NSMutableArray *toDoList;
 
 - (IBAction) Add:(id)sender;
-- (IBAction) Edit:(id)sender;
 
 @end

@@ -35,24 +35,12 @@
     UINib *toDoNib = [UINib nibWithNibName:@"ToDoCell" bundle:nil];
     [self.tableView registerNib:toDoNib forCellReuseIdentifier:@"ToDoCell"];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered  target:self action:@selector(Edit:)];
-    
-    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(Add:)];
     
     self.toDoList = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"ToDoList"]];
-    NSLog(@"Count is %i", self.toDoList.count);
-    
-    if(self.toDoList.count == 0) {
-        NSMutableArray *myArray = [[NSMutableArray alloc] initWithObjects:@"Apples", @"Oranges", @"Pears", @"Fruit", nil];
-        [[NSUserDefaults standardUserDefaults] setObject:myArray forKey:@"ToDoList"];
-        self.toDoList = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"ToDoList"]];
-
-    }
+    //NSLog(@"Count is %i", self.toDoList.count);
     
 }
 
@@ -79,13 +67,17 @@
     static NSString *CellIdentifier = @"ToDoCell";
     ToDoCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    //cell.textLabel.text = [self.toDoList valueForKey:[self.toDoList objectAtIndex:indexPath.row]];
-    cell.toDoItem.text = [self.toDoList objectAtIndex:[indexPath row]];
-    //NSLog(@"Cell is %@", [self.toDoList objectAtIndex:indexPath.row]);
+    [cell.toDoTextItem addTarget:self action:@selector(textChanged:) forControlEvents:UIControlEventEditingChanged];
+    cell.toDoTextItem.text = [self.toDoList objectAtIndex:[indexPath row]];
+    
+    if ([indexPath row] == 0) {
+        [cell.toDoTextItem becomeFirstResponder];
+    }
+    
+    //NSLog(@"Cell is %ld %@", (long)[indexPath row], [self.toDoList objectAtIndex:indexPath.row]);
     
     return cell;
 }
-
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -94,7 +86,6 @@
     return YES;
 }
 
-
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -102,11 +93,7 @@
         // Delete the row from the data source
         [self.toDoList removeObjectAtIndex:indexPath.row];
 		[self.tableView reloadData];
-    }
-//    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-//        //[self.toDoList insertObject:@"Mac Mini" atIndex:[self.toDoList count]];
-//		[self.tableView reloadData];
-//    }   
+    } 
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
@@ -134,29 +121,32 @@
      */
 }
 
--(IBAction)Add:(id)sender
+- (void)textChanged:(UITextField *)source
 {
+
+    NSString *str= source.text;
+
+    ToDoCell *textField = (ToDoCell *)[[[source superview] superview] superview];
+    UITableView* table = (UITableView *)[textField superview];
+    NSIndexPath* pathOfTheCell = [table indexPathForCell:textField];
+    NSUInteger index = [pathOfTheCell row];
     
+    //NSLog(@"replacing at %i = %@",index, str);
+    
+    [self.toDoList replaceObjectAtIndex:index withObject:str];
+    [[NSUserDefaults standardUserDefaults] setObject:self.toDoList forKey:@"ToDoList"];
+
 }
 
-- (IBAction) Edit:(id)sender{
-    NSLog(@"Editing is %hhd", self.editing);
-	if(self.editing)
-	{
-		[super setEditing:NO animated:NO];
-		[self.tableView setEditing:NO animated:NO];
-		[self.tableView  reloadData];
-		[self.navigationItem.leftBarButtonItem setTitle:@"Edit"];
-		[self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleBordered];
-	}
-	else
-	{
-		[super setEditing:YES animated:YES];
-		[self.tableView  setEditing:YES animated:YES];
-		[self.tableView  reloadData];
-		[self.navigationItem.leftBarButtonItem setTitle:@"Done"];
-		[self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleDone];
-	}
+
+-(IBAction)Add:(id)sender
+{
+    [self.toDoList insertObject:@"" atIndex:0];
+    [super setEditing:NO animated:NO];
+    [self.tableView setEditing:NO animated:NO];
+    [self.tableView  reloadData];
+    [self.navigationItem.leftBarButtonItem setTitle:@"Edit"];
+    [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleBordered];
 }
 
 @end

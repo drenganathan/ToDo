@@ -10,6 +10,7 @@
 
 @interface ToDoCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel *toDoItem;
+@property (nonatomic, weak) IBOutlet UITextField *toDoTextItem;
+
 
 @end
