@@ -69,6 +69,7 @@
     
     [cell.toDoTextItem addTarget:self action:@selector(textChanged:) forControlEvents:UIControlEventEditingChanged];
     cell.toDoTextItem.text = [self.toDoList objectAtIndex:[indexPath row]];
+    cell.toDoTextItem.tag = [indexPath row];
     
     if ([indexPath row] == 0) {
         [cell.toDoTextItem becomeFirstResponder];
@@ -101,6 +102,7 @@
 	[self.toDoList removeObject:item];
 	[self.toDoList insertObject:item atIndex:toIndexPath.row];
     [[NSUserDefaults standardUserDefaults] setObject:self.toDoList forKey:@"ToDoList"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -125,17 +127,13 @@
 {
 
     NSString *str= source.text;
-
-    ToDoCell *textField = (ToDoCell *)[[[source superview] superview] superview];
-    UITableView* table = (UITableView *)[textField superview];
-    NSIndexPath* pathOfTheCell = [table indexPathForCell:textField];
-    NSUInteger index = [pathOfTheCell row];
+    NSUInteger index = source.tag;
     
-    //NSLog(@"replacing at %i = %@",index, str);
+    NSLog(@"replacing at %i = %@",source.tag, str);
     
     [self.toDoList replaceObjectAtIndex:index withObject:str];
     [[NSUserDefaults standardUserDefaults] setObject:self.toDoList forKey:@"ToDoList"];
-
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 

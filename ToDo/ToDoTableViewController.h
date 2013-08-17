@@ -10,7 +10,7 @@
 
 @interface ToDoTableViewController : UITableViewController  <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, retain) NSMutableArray *toDoList;
+@property (nonatomic, strong) NSMutableArray *toDoList;
 
 - (IBAction) Add:(id)sender;
 
